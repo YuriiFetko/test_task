@@ -1,1 +1,5 @@
-<p>task works!</p>
+<div class="task">
+  <h2 class="task__title">{{task.title}}</h2>
+  <p class="task__desc">{{task.desc}}</p>
+  <button class="delete btn" (click)="delete(task)">Delete task</button>
+</div>

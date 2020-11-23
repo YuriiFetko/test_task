@@ -1,11 +1,17 @@
-export class Task {
-  add(task: Task): Observable<Task> {
-    if (task.id === null || task.id === 0) {
-      task.id = this.getLastIdTask();
-    }
+import {Observable, of} from 'rxjs';
+import {Task} from '../../shared/interfaces';
+import {TestData} from '../testData';
 
-    if (task.status === null) {
-      task.status = this.getStatus();
+export class TaskDAO {
+
+  getAll(): Task[] {
+    return TestData.tasks;
+  }
+
+
+  add(task: Task): Observable<Task> {
+    if (task.id === undefined || task.id === 0) {
+      task.id = this.getLastIdTask();
     }
 
     TestData.tasks.push(task);
@@ -14,16 +20,15 @@ export class Task {
   }
 
   getLastIdTask(): number {
-    return (
-      Math.max.apply(
-        Math,
-        TestData.tasks.map((task) => task.id)
-      ) + 1
-    );
-  }
-
-  getStatus(): Status {
-    return {id: 1, title: 'Active', completed: false};
+    if (TestData.tasks.length === 0) {
+      return 1;
+    } else {
+      return (
+        Math.max.apply(
+          Math, TestData.tasks.map((task) => task.id)
+        ) + 1
+      );
+    }
   }
 
   delete(id: number): Observable<Task> {
